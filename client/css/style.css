@@ -474,31 +474,10 @@ ul {
    ================================================ */
 .about-content {
   display: grid;
-  grid-template-columns: auto 1.5fr 1fr;
-  gap: 2.5rem;
-  align-items: center;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  align-items: start;
   margin-top: 2rem;
-}
-
-.about-avatar-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.about-avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--accent-primary);
-  box-shadow: 0 8px 30px rgba(108, 99, 255, 0.25);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
-}
-
-.about-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 35px rgba(108, 99, 255, 0.45);
 }
 
 .about-text p {
