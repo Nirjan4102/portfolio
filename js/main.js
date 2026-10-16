@@ -156,8 +156,54 @@ document.addEventListener('DOMContentLoaded', () => {
       // Re-observe for scroll animations
       observeElements();
     } catch (error) {
-      console.error('Failed to load skills:', error);
-      container.innerHTML = '<div class="empty-state"><p>Unable to load skills. Please try again later.</p></div>';
+      console.warn('Backend skills API unavailable, using local skills data:', error);
+      const fallbackSkills = {
+        Frontend: [
+          { name: 'HTML5', proficiencyLevel: 95 },
+          { name: 'CSS3 / Sass', proficiencyLevel: 90 },
+          { name: 'JavaScript (ES6+)', proficiencyLevel: 92 },
+          { name: 'React', proficiencyLevel: 85 },
+          { name: 'Tailwind CSS', proficiencyLevel: 88 },
+        ],
+        Backend: [
+          { name: 'Node.js', proficiencyLevel: 90 },
+          { name: 'Express.js', proficiencyLevel: 88 },
+          { name: 'MongoDB', proficiencyLevel: 85 },
+          { name: 'REST APIs', proficiencyLevel: 92 },
+        ],
+        Tools: [
+          { name: 'Git & GitHub', proficiencyLevel: 90 },
+          { name: 'VS Code', proficiencyLevel: 95 },
+          { name: 'Postman', proficiencyLevel: 85 },
+          { name: 'Linux / CLI', proficiencyLevel: 82 },
+        ],
+      };
+
+      const categoryIcons = { Frontend: '🎨', Backend: '⚙️', Tools: '🛠️' };
+      let html = '<div class="skills-grid">';
+      for (const [category, skills] of Object.entries(fallbackSkills)) {
+        html += `
+          <div class="skill-category reveal">
+            <h3 class="skill-category-title">
+              <span>${categoryIcons[category] || '📦'}</span> ${category}
+            </h3>
+            ${skills.map((skill) => `
+              <div class="skill-item">
+                <div class="skill-info">
+                  <span class="skill-name">${skill.name}</span>
+                  <span class="skill-level">${skill.proficiencyLevel}%</span>
+                </div>
+                <div class="skill-bar">
+                  <div class="skill-bar-fill" data-width="${skill.proficiencyLevel}"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+      html += '</div>';
+      container.innerHTML = html;
+      observeElements();
     }
   }
 
@@ -166,62 +212,75 @@ document.addEventListener('DOMContentLoaded', () => {
   // ========================================
   async function loadProjects() {
     const container = document.getElementById('projects-container');
+    let projectsData = [];
+
     try {
       const res = await fetch('/api/projects');
       const json = await res.json();
-
-      if (!json.success || !json.data || json.data.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>Projects coming soon...</p></div>';
-        return;
+      if (json.success && json.data && json.data.length > 0) {
+        projectsData = json.data;
       }
+    } catch (apiErr) {
+      console.warn('Backend projects API unavailable, fetching directly from GitHub API:', apiErr.message);
+      try {
+        const ghRes = await fetch('https://api.github.com/users/Nirjan4102/repos?sort=updated');
+        if (ghRes.ok) {
+          const ghRepos = await ghRes.json();
+          projectsData = ghRepos.map((repo) => ({
+            title: repo.name.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+            description: repo.description || `Open-source web application built with ${repo.language || 'modern web technologies'}.`,
+            techStack: [repo.language || 'JavaScript', ...(repo.topics || [])].filter(Boolean),
+            liveUrl: repo.homepage || '',
+            githubUrl: repo.html_url,
+            featured: Boolean(repo.homepage),
+          }));
+        }
+      } catch (ghErr) {
+        console.error('Failed to fetch from GitHub API:', ghErr);
+      }
+    }
 
-      let html = '<div class="projects-grid">';
-      json.data.forEach((project) => {
-        const imageHtml = (project.image && !project.image.includes('placehold.co'))
-          ? `<img src="${project.image}" alt="${project.title}" class="project-image" loading="lazy" />`
-          : '';
+    if (!projectsData || projectsData.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>Projects coming soon...</p></div>';
+      return;
+    }
 
-        const featuredBadge = project.featured
-          ? '<span class="project-featured-badge">⭐ Featured</span>'
-          : '';
+    let html = '<div class="projects-grid">';
+    projectsData.forEach((project) => {
+      const featuredBadge = project.featured
+        ? '<span class="project-featured-badge">⭐ Featured</span>'
+        : '';
 
-        const techTags = project.techStack
-          .map((tech) => `<span class="tech-tag">${tech}</span>`)
-          .join('');
+      const techTags = (project.techStack || ['JavaScript'])
+        .map((tech) => `<span class="tech-tag">${tech}</span>`)
+        .join('');
 
-        const liveLink = project.liveUrl
-          ? `<a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">Live Demo</a>`
-          : '';
+      const liveLink = project.liveUrl
+        ? `<a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">Live Demo</a>`
+        : '';
 
-        const githubLink = project.githubUrl
-          ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">GitHub</a>`
-          : '';
+      const githubLink = project.githubUrl
+        ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">GitHub</a>`
+        : '';
 
-        html += `
-          <div class="project-card reveal">
-            ${imageHtml}
-            <div class="project-body">
-              ${featuredBadge}
-              <h3 class="project-title">${project.title}</h3>
-              <p class="project-description">${project.description}</p>
-              <div class="project-tech">${techTags}</div>
-              <div class="project-links">
-                ${liveLink}
-                ${githubLink}
-              </div>
+      html += `
+        <div class="project-card reveal">
+          <div class="project-body">
+            ${featuredBadge}
+            <h3 class="project-title">${project.title}</h3>
+            <p class="project-description">${project.description}</p>
+            <div class="project-tech">${techTags}</div>
+            <div class="project-links">
+              ${liveLink}
+              ${githubLink}
             </div>
           </div>
-        `;
-      });
-      html += '</div>';
-      container.innerHTML = html;
-
-      // Re-observe for scroll animations
-      observeElements();
-    } catch (error) {
-      console.error('Failed to load projects:', error);
-      container.innerHTML = '<div class="empty-state"><p>Unable to load projects. Please try again later.</p></div>';
-    }
+        </div>
+      `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    observeElements();
   }
 
   // ========================================
