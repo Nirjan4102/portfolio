@@ -1,71 +1,105 @@
-# 🚀 Personal Portfolio Website
+# 🚀 Nirjan Mondal — Full-Stack Personal Portfolio Website
 
-A production-ready personal portfolio website built with **Node.js**, **Express.js**, **MongoDB**, and vanilla **HTML/CSS/JavaScript**.
+A production-ready personal portfolio website built with **Node.js**, **Express.js**, **MongoDB**, and vanilla **HTML5 / CSS3 / ES6+ JavaScript** following a clean **MVC / Layered Architecture**.
 
-## ✨ Features
+🌐 **Live Demo:** [https://nirjan4102.github.io/portfolio/](https://nirjan4102.github.io/portfolio/)  
+📦 **GitHub Repository:** [https://github.com/Nirjan4102/portfolio](https://github.com/Nirjan4102/portfolio)
 
-- **Responsive Design** — Mobile-first UI with dark/light theme toggle
-- **Dynamic Content** — Projects and skills fetched from REST API
-- **Contact Form** — Server-side validation, rate limiting, and email notifications
-- **Security** — Helmet headers, CORS, rate limiting, input sanitization
-- **Modern Frontend** — CSS Grid/Flexbox, CSS variables, scroll animations
+---
 
-## 🛠️ Tech Stack
+## ✨ Features & Requirements
 
-| Layer      | Technologies                                       |
-|------------|----------------------------------------------------|
-| Frontend   | HTML5, CSS3, JavaScript (ES6+)                     |
-| Backend    | Node.js, Express.js                                |
-| Database   | MongoDB, Mongoose                                  |
-| Email      | Nodemailer (SMTP)                                  |
-| Security   | Helmet, CORS, express-rate-limit, express-validator |
+- **Responsive & Mobile-First UI**: Custom CSS Grid and Flexbox layouts with full mobile navigation drawer and active scroll highlighting.
+- **Enterprise Dark & Light Themes**: Professional slate and cobalt tech color system with `localStorage` memory persistence.
+- **Backend-Driven Dynamic Content**: Dynamic GitHub repository integration via REST API fetching live public repos from `https://api.github.com/users/Nirjan4102/repos`.
+- **RESTful API Endpoints**: Endpoints for projects, categorized skills, profile data, and contact submissions.
+- **Robust Contact Form**: Client-side feedback, server-side validation using `express-validator`, rate limiting to prevent spam, and database persistence in MongoDB.
+- **Server-Side Email Alerts**: Automatic HTML notification dispatch using `nodemailer` (SMTP).
+- **Security & Reliability**: `helmet` security headers, `cors` cross-origin control, and `express-rate-limit`.
+- **Architectural Integrity**: Pure MVC layered architecture.
 
-## 📁 Project Structure
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend** | HTML5, CSS3 (Custom Variables, Flexbox, Grid), JavaScript (ES6+ Vanilla) |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB, Mongoose ORM |
+| **Email Service**| Nodemailer (SMTP / Gmail) |
+| **Security** | Helmet, CORS, express-rate-limit, express-validator |
+| **Deployment** | GitHub Pages (Live Frontend), Render / Vercel (Full-Stack Backend) |
+
+---
+
+## 📁 Project Structure (MVC / Layered Architecture)
 
 ```
 portfolio/
-├── client/                    # Static frontend assets
+├── client/                     # [VIEW] Presentation Layer
 │   ├── css/
-│   │   └── style.css          # Main stylesheet (dark/light themes)
+│   │   └── style.css           # Professional Slate & Cobalt Stylesheet (Dark/Light)
 │   ├── js/
-│   │   └── main.js            # Client-side JavaScript
-│   └── index.html             # Single-page HTML
-├── server/                    # Backend application
+│   │   └── main.js             # Client-side dynamic data fetching & interactions
+│   ├── favicon.svg             # Tech SVG Favicon
+│   └── index.html              # Semantic HTML5 Single Page Application
+├── server/                     # [BACKEND] Application Layer
 │   ├── config/
-│   │   ├── db.js              # MongoDB connection
-│   │   └── nodemailer.js      # SMTP transporter
-│   ├── controllers/
-│   │   ├── projectController.js
-│   │   ├── skillController.js
-│   │   └── contactController.js
-│   ├── models/
-│   │   ├── Project.js
-│   │   ├── Skill.js
-│   │   └── Contact.js
+│   │   ├── db.js               # MongoDB connection with resilient error handling
+│   │   └── nodemailer.js       # SMTP email transporter
+│   ├── controllers/            # [CONTROLLER] Request handling & business logic
+│   │   ├── projectController.js# Dynamic GitHub repo fetching & MongoDB sync
+│   │   ├── skillController.js  # Categorized technical skills
+│   │   ├── profileController.js# Bio, stats, and profile data
+│   │   └── contactController.js# Form validation, DB save & email notification
+│   ├── models/                 # [MODEL] Mongoose data schemas
+│   │   ├── Project.js          # Project schema (title, stack, urls, featured)
+│   │   ├── Skill.js            # Skill schema (name, category, proficiency)
+│   │   └── Contact.js          # Contact submission schema
 │   ├── routes/
-│   │   └── apiRoutes.js
+│   │   └── apiRoutes.js        # RESTful API route definitions
 │   ├── middleware/
-│   │   ├── errorHandler.js
-│   │   └── validator.js
-│   └── seed.js                # Database seeder
-├── .env.example               # Environment template
-├── .gitignore
-├── package.json
-├── README.md
-└── server.js                  # Application entry point
+│   │   ├── errorHandler.js     # Centralized global error handling
+│   │   └── validator.js        # express-validator request rules
+│   └── seed.js                 # Database seeder script
+├── .env.example                # Environment variable template
+├── .gitignore                  # Git exclusion rules (protects .env)
+├── package.json                # Dependencies and npm scripts
+├── render.yaml                 # Render cloud deployment blueprint
+├── vercel.json                 # Vercel serverless configuration
+├── README.md                   # Complete documentation
+└── server.js                   # Application entry point
 ```
 
-## 📋 Prerequisites
+---
 
-- **Node.js** >= 18.0.0
-- **MongoDB** (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
-- **npm** or **yarn**
+## 📡 RESTful API Endpoints
 
-## 🚀 Local Setup
+| Method | Endpoint | Description | Rate Limited |
+|---|---|---|---|
+| `GET` | `/api/projects` | Fetch all portfolio projects (dynamically synced with GitHub) | No |
+| `GET` | `/api/skills` | Fetch categorized skills (Frontend, Backend, Tools) | No |
+| `GET` | `/api/profile` | Fetch profile summary, tagline, bio, and statistics | No |
+| `POST` | `/api/contact` | Submit contact form message with server validation | **Yes** (5 req / 15 min) |
+
+### Sample `POST /api/contact` Payload:
+```json
+{
+  "name": "Alex Johnson",
+  "email": "alex@example.com",
+  "subject": "Full-Stack Project Collaboration",
+  "message": "Hi Nirjan, I loved your portfolio projects and would like to discuss an opportunity."
+}
+```
+
+---
+
+## 🚀 Local Setup & Installation
 
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/Nirjan4102/portfolio.git
 cd portfolio
 ```
 
@@ -78,63 +112,53 @@ npm install
 ```bash
 cp .env.example .env
 ```
-Edit `.env` with your MongoDB URI and SMTP credentials.
+Update `.env` with your settings:
+```env
+PORT=3000
+NODE_ENV=development
+MONGO_URI=mongodb://localhost:27017/portfolioDB
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_16_digit_app_password
+RECEIVER_EMAIL=your_email@gmail.com
+GITHUB_USERNAME=Nirjan4102
+```
 
-### 4. Seed the database (optional)
+### 4. Seed sample data (optional)
 ```bash
 npm run seed
 ```
-This populates sample projects and skills.
 
-### 5. Start the development server
+### 5. Start the server
 ```bash
+# Production mode:
+npm start
+
+# Development mode (with nodemon):
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 6. Start for production
-```bash
-npm start
-```
+---
 
-## 📡 API Endpoints
+## 🌐 Cloud Deployment Guide
 
-| Method | Endpoint        | Description                      | Rate Limited |
-|--------|-----------------|----------------------------------|--------------|
-| GET    | `/api/projects` | Fetch all portfolio projects     | No           |
-| GET    | `/api/skills`   | Fetch categorized skills         | No           |
-| POST   | `/api/contact`  | Submit contact form message      | Yes (5/15min)|
+### Deploying on Render (Free Tier)
+1. Push your repository to GitHub.
+2. Sign in to [render.com](https://render.com) using your GitHub account.
+3. Click **New +** $\rightarrow$ **Web Service** $\rightarrow$ Connect `Nirjan4102/portfolio`.
+4. Configure environment variables:
+   - `MONGO_URI`: Your MongoDB Atlas URI.
+   - `SMTP_USER`: Your Gmail address.
+   - `SMTP_PASS`: Your 16-character Google App Password.
+   - `RECEIVER_EMAIL`: Your email address.
+5. Deploy and get your permanent live URL!
 
-### POST `/api/contact` — Request Body
-```json
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "subject": "Project Inquiry",
-  "message": "I'd love to collaborate on a project..."
-}
-```
-
-## 🌐 Deployment
-
-### MongoDB Atlas
-1. Create a free cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas)
-2. Create a database user and whitelist your IP (or 0.0.0.0/0)
-3. Copy the connection string to `MONGO_URI` in `.env`
-
-### Deploy to Render
-1. Push your code to GitHub
-2. Create a **New Web Service** on [render.com](https://render.com)
-3. Connect your repository
-4. Set:
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-5. Add environment variables from `.env` in the Render dashboard
-6. Deploy!
-
-### Deploy to Vercel
-> Note: Vercel is optimized for serverless. For a traditional Express app, Render or Railway is recommended.
+---
 
 ## 📄 License
 
-MIT License — feel free to use this for your own portfolio!
+This project is open-source under the **MIT License**.
+Authored by **Nirjan Mondal** ([GitHub](https://github.com/Nirjan4102) | [LinkedIn](https://www.linkedin.com/in/nirjan-mondal-863235294/)).
