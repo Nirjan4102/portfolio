@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Nirjan Mondal - Full-Stack Developer Portfolio. Building modern web applications with cutting-edge technologies." />
+    <title>Nirjan Mondal | Full-Stack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar" id="navbar">
+        <nav class="nav-container">
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <p class="hero-greeting">Hello, I'm</p>
+                <h1 class="hero-name">Nirjan Mondal</h1>
+                <h2 class="hero-title">Full-Stack <span class="typed-text" id="typed-text"></span><span class="cursor">|</span></h2>
+                <p class="hero-description">
+                    I craft modern, performant web applications with clean code and thoughtful user experiences.
+                </p>
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-outline">Contact Me</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <pre class="code-body"><code><span class="code-keyword">const</span> <span class="code-variable">developer</span> = {
+  <span class="code-property">name</span>: <span class="code-string">'Nirjan Mondal'</span>,
+  <span class="code-property">role</span>: <span class="code-string">'Full-Stack Dev'</span>,
+  <span class="code-property">skills</span>: [<span class="code-string">'JS'</span>, <span class="code-string">'Node'</span>, <span class="code-string">'MongoDB'</span>],
+  <span class="code-property">passion</span>: <span class="code-string">'Building cool stuff'</span>,
+};</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="section" id="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>
+                            I'm a passionate Full-Stack Developer with a love for creating elegant, efficient, and user-friendly web applications. With expertise spanning front-end frameworks to back-end architectures, I enjoy turning complex problems into simple, beautiful solutions.
+                        </p>
+                        <p>
+                            My journey in web development started with curiosity and has grown into a professional pursuit of excellence. I'm constantly learning new technologies and best practices to deliver high-quality software that makes a difference.
+                        </p>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <span class="stat-number">3+</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">20+</span>
+                            <span class="stat-label">Projects Completed</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">10+</span>
+                            <span class="stat-label">Technologies</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="section" id="skills">
+            <div class="container">
+                <h2 class="section-title">My Skills</h2>
+                <div id="skills-container">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading skills...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="section" id="projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div id="projects-container">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading projects...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section" id="contact">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Have a project in mind or just want to say hello? Feel free to reach out!</p>
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required minlength="2" maxlength="100" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="What's this about?" required minlength="2" maxlength="200" />
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Tell me about your project..." required minlength="10" maxlength="5000"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit" id="submit-btn">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loading" style="display: none;">Sending...</span>
+                    </button>
+                </form>
+                <div id="form-status"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-socials">
+                    <a href="https://github.com/Nirjan4102" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub</a>
+                    <a href="https://www.linkedin.com/in/nirjan-mondal-863235294/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
+                </div>
+                <p class="footer-copy">&copy; <span id="current-year"></span> Nirjan Mondal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
